@@ -269,6 +269,9 @@
 }
 
 @media only screen and (max-width: 767px) {
+    .linede{
+        display: none;
+    }
     .main-menu .navigation>li.has-mega-menu,
     .mobile-menu .navigation li.has-mega-menu {
         display: none;
