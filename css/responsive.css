@@ -269,8 +269,8 @@
 }
 
 @media only screen and (max-width: 767px) {
-    .linede{
-        display: none;
+    .remove ,.linede{
+        display: none !important;
     }
     .main-menu .navigation>li.has-mega-menu,
     .mobile-menu .navigation li.has-mega-menu {
