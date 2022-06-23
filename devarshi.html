@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Devarshi Doshi</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./vcard/style.css">
+    <link rel="icon" href="./vcard/devarshi.png">
+    <script src="https://kit.fontawesome.com/deb24230a4.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="card" id="card">
+        <h2 class="title">LANCINGDEV</h2>
+        <div class="card__img">
+            <div class="scene"></div>
+            <h2 class="subtitle">COO</h2>
+        </div>
+        <div class="card__description">
+
+            <div class="card__container">
+
+                <div class="card__info">
+                    <div class="card__header">
+                        <p class="card__price"><img src="./vcard/iron.png" height="250px" width="200px" alt=""></p>
+                    </div>
+                    <h1 class="card__title">Devarshi Doshi</h1>
+                    <h2 class="card__subtitle">Founder of LancingDev</h2>
+                </div>
+                <div class="colors">
+                    <span class="color__title" style="margin-bottom: 20px;">Portfolio</span>
+                    <div class="color__container">
+                        <a href="https://devarshidoshi.github.io/" target="_blank"><img src="./vcard/D.png" style="width: 70px;"
+                                alt=""></a>
+                    </div>
+                </div>
+                <div class="colors">
+                    <span class="color__title" style="margin-bottom: 20px;">Social Media</span>
+                    <div class="color__container">
+                        <a href="https://www.instagram.com/devarshi_doshi/" target="_blank"><img src="./vcard/instagram.svg"
+                                style="width: 70px;" alt=""></a>
+                        <a href="https://www.linkedin.com/in/devarshi-doshi-45571a13b/" class="fa-brands fa-linkedin"
+                            style="color: #007bb6; color: rgb(0, 123, 182);" target="_blank"></a>
+                        <a href="https://lancingdev.com"><img src="./vcard/logo.svg" style="width: 70px;" alt=""
+                                target="_blank"></a>
+                        <a href="https://twitter.com/DoshiDevarshi" class="fa-brands fa-twitter-square"
+                            style="color: #00aced; color: rgb(0, 172, 237); " target="_blank"></a>
+                        <a href="https://github.com/devarshidoshi" class="fa fa-github-square"></a>
+
+                    </div>
+                </div>
+                <a class="card__button" style="background-color: darkorange;"
+                    onclick="window.open('./vcard/vdevarshi.vcf')">Save to Contact</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
+    <script>
+        container = document.querySelector(".scene");
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, .1, 2000);
+        const scene = new THREE.Scene();
+
+        let Mesh;
+        let light;
+
+
+        function init() {
+            // scene.background = new THREE.Color('white');
+
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            camera.position.set(0, 10, 19);
+            container.appendChild(renderer.domElement);
+        }
+        const plight = new THREE.PointLight(0xFF0000, 2, 1000);
+        plight.position.set(0.5, 0.5, 0.5);
+        plight.castShadow = true;
+        scene.add(plight);
+        function setLight() {
+            // light = new THREE.AmbientLight(0xffffff); // soft white light
+            // scene.add(light);
+            const ambient = new THREE.AmbientLight(0xfcfcfc, 1.1);
+            scene.add(ambient);
+
+            const light = new THREE.DirectionalLight(0x000000, 1);
+            light.position.set(0.5, 0.5, 0.1);
+            scene.add(light);
+
+
+
+            const pplight = new THREE.PointLight(0xffffff, 2, 1000);
+            pplight.position.set(0, 12.5, 25);
+            scene.add(pplight);
+
+            const ppplight = new THREE.PointLight(0xffffff, 2, 1000);
+            ppplight.position.set(13, 13, 0);
+            scene.add(ppplight);
+
+            const pppplight = new THREE.PointLight(0xffffff, 2, 1000);
+            pppplight.position.set(-13, 13, 0);
+            scene.add(pppplight);
+
+            // const spotLight = new THREE.SpotLight(0xffffff);
+            // spotLight.position.set(0, 12.5, 25);
+            // scene.add(spotLight);
+        }
+
+        function shuffleLight() {
+            anime({
+                targets: [plight.color],
+                // color: color.setHex(Math.random() * 0xffffff),
+                r: 0.1 + Math.random(),
+                g: 0.1 + Math.random(),
+                b: 0.1 + Math.random(),
+                easing: "easeInOutQuart",
+                duration: 500
+            });
+
+            anime({
+                targets: plight.intensity,
+                // power: Math.max(Math.random() * 200, 5),
+                intensity: 1,
+                easing: "easeInOutQuart",
+                duration: 500
+            });
+        }
+        function loadGLTF() {
+            let ldlogoLoader = new THREE.GLTFLoader();
+
+            ldlogoLoader.load('./vcard/gkp.gltf', (gltf) => {
+                Mesh = gltf.scene;
+                // Mesh.scale.set(0.1, 0.1, 0.1);
+                Mesh.scale.multiplyScalar(0.12);
+                scene.add(Mesh);
+                Mesh.position.x = 00;
+                Mesh.position.y = 10;
+                Mesh.position.z = 15;
+
+            });
+        }
+        function animate() {
+
+            requestAnimationFrame(animate);
+            if (Mesh && Mesh.rotation) {
+                Mesh.rotation.y -= 0.015;
+            }
+            renderer.render(scene, camera);
+
+        }
+
+        init();
+        setLight();
+        loadGLTF();
+        animate();
+        container.addEventListener('click', function (event) {
+            event.preventDefault();
+            shuffleLight();
+        },
+            false
+        );
+    </script>
+
+</body>
+
+</html>
