@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LancingDev</title>
+    <style>
+        *,
+        *::after,
+        *::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-width: 650px;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 11px;
+            /* font-family: "poppins", sans-serif; */
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            /* background: #ED213A;
+  background: -webkit-linear-gradient(to right, #93291E, #ED213A);
+  background: linear-gradient(to right, #93291E, #ED213A); */
+            /* Created with https://www.css-gradient.com */
+
+            color: #232323;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            /* background: radial-gradient(circle at 50% 50%, rgb(225, 234, 238) 0%, rgb(27, 27, 27) 90%); */
+            background: url('https://image.shutterstock.com/z/stock-photo-old-white-wooden-floor-and-wall-wood-texture-background-655427185.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+        }
+
+        .scene {
+            position: absolute;
+            padding-top: 150px;
+            /* left: -25px; */
+            width: 100%;
+            height: 100vh;
+            /* z-index: 10; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scene"></div>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
+    <script>
+        container = document.querySelector(".scene");
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, .1, 2000);
+        const scene = new THREE.Scene();
+
+        let Mesh;
+        let light;
+
+
+        function init() {
+            // scene.background = new THREE.Color('white');
+
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            camera.position.set(0, 10, 19);
+            container.appendChild(renderer.domElement);
+        }
+        const plight = new THREE.PointLight(0xFF0000, 2, 1000);
+        plight.position.set(0.5, 0.5, 0.5);
+        plight.castShadow = true;
+        scene.add(plight);
+        function setLight() {
+            // light = new THREE.AmbientLight(0xffffff); // soft white light
+            // scene.add(light);
+            const ambient = new THREE.AmbientLight(0xfcfcfc, 1.1);
+            scene.add(ambient);
+
+            const light = new THREE.DirectionalLight(0x000000, 1);
+            light.position.set(0.5, 0.5, 0.1);
+            scene.add(light);
+
+
+
+            const pplight = new THREE.PointLight(0xffffff, 2, 1000);
+            pplight.position.set(0, 12.5, 25);
+            scene.add(pplight);
+
+            const ppplight = new THREE.PointLight(0xffffff, 2, 1000);
+            ppplight.position.set(13, 13, 0);
+            scene.add(ppplight);
+
+            const pppplight = new THREE.PointLight(0xffffff, 2, 1000);
+            pppplight.position.set(-13, 13, 0);
+            scene.add(pppplight);
+
+            // const spotLight = new THREE.SpotLight(0xffffff);
+            // spotLight.position.set(0, 12.5, 25);
+            // scene.add(spotLight);
+        }
+
+        function shuffleLight() {
+            anime({
+                targets: [plight.color],
+                // color: color.setHex(Math.random() * 0xffffff),
+                r: 0.1 + Math.random(),
+                g: 0.1 + Math.random(),
+                b: 0.1 + Math.random(),
+                easing: "easeInOutQuart",
+                duration: 500
+            });
+
+            anime({
+                targets: plight.intensity,
+                // power: Math.max(Math.random() * 200, 5),
+                intensity: 1,
+                easing: "easeInOutQuart",
+                duration: 500
+            });
+        }   
+        function loadGLTF() {
+            let ldlogoLoader = new THREE.GLTFLoader();
+
+            ldlogoLoader.load('./vcard/gkp.gltf', (gltf) => {
+                Mesh = gltf.scene;
+                // Mesh.scale.set(0.1, 0.1, 0.1);
+                Mesh.scale.multiplyScalar(0.12);
+                scene.add(Mesh);
+                Mesh.position.x = 00;
+                Mesh.position.y = 10;
+                Mesh.position.z = 15;
+
+            });
+        }
+        function animate() {
+
+            requestAnimationFrame(animate);
+            if (Mesh && Mesh.rotation) {
+                Mesh.rotation.y -= 0.015;
+            }
+            renderer.render(scene, camera);
+
+        }
+
+        init();
+        setLight();
+        loadGLTF();
+        animate();
+        container.addEventListener('click', function (event) {
+            event.preventDefault();
+            shuffleLight();
+        },
+            false
+        );
+    </script>
+</body>
+
+</html>
